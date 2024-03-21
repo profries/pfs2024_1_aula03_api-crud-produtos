@@ -15,6 +15,8 @@ let listaProdutos = [
     },
 ];
 
+app.use(express.json());
+
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
 })
@@ -36,8 +38,16 @@ app.get('/produtos/:id', (req, res) => {
     else {
         res.status(404).json({erro:"Produto nao encontrado"});
     }
+})
 
-  })
+app.post("/produtos", (req, res) => {
+    const produto = req.body;
+
+    listaProdutos.push(produto);    
+
+    res.status(201).json(produto);
+
+})
   
 
 app.listen(port, () => {
