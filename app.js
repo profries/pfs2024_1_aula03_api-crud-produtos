@@ -48,6 +48,37 @@ app.post("/produtos", (req, res) => {
     res.status(201).json(produto);
 
 })
+
+app.put('/produtos/:id', (req, res) => {
+    const produtoPayload = req.body;
+    const id = +req.params.id;
+
+    for(let produto of listaProdutos){
+        if(produto.id === id){
+            produto.nome = produtoPayload.nome;
+            produto.preco = produtoPayload.preco;
+            res.json(produto);
+            return;
+        }
+    }
+    res.status(404).json({erro:"Produto nao encontrado"});
+})
+
+app.delete('/produtos/:id', (req,res) => {
+    const id = +req.params.id;
+
+    let indice = listaProdutos.findIndex((produto) => {
+        return produto.id === id;
+    })
+
+    if(indice >= 0){
+        res.json(listaProdutos.splice(indice, 1));
+    }
+    else{
+        res.status(404).json({erro:"Produto nao encontrado"});
+    }
+    
+})
   
 
 app.listen(port, () => {
